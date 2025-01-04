@@ -1,7 +1,9 @@
 package encrypt
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"pgpcli/internal/keyutils"
 
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
@@ -9,8 +11,13 @@ import (
 
 func Encrypt() error {
     fmt.Println("Encrypted message:")
-    var v string
-    fmt.Scan(&v)
+    scanner := bufio.NewScanner(os.Stdin)
+    scanner.Scan()
+    err := scanner.Err()
+    if err != nil {
+        return err
+    }
+    v := scanner.Text()
 
     pgp := crypto.PGP()
 
@@ -20,9 +27,14 @@ func Encrypt() error {
     }
 
     for {
-        var next string
         fmt.Println("Name of next recipient, or type HALT:")
-        fmt.Scan(&next)
+        scan := bufio.NewScanner(os.Stdin)
+        scan.Scan()
+        err := scan.Err()
+        if err != nil {
+            return err
+        }
+        next := scan.Text()
         if next == "HALT" {
             break
         }

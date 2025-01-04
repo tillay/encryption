@@ -1,6 +1,7 @@
 package importkey
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 
@@ -22,8 +23,13 @@ func ImportKey() error {
     }
 
     fmt.Println("Enter username (remember this, its case sensitive!):")
-    var user string
-    fmt.Scan(&user)
+    scanner := bufio.NewScanner(os.Stdin)
+    scanner.Scan()
+    err = scanner.Err()
+    if err != nil {
+        return err
+    }
+    user := scanner.Text()
 
     homeDir, err := os.UserHomeDir()
     if err != nil {

@@ -1,6 +1,7 @@
 package createkey
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 
@@ -13,16 +14,21 @@ func CreateKey() error {
     pgp := crypto.PGP()
 
     fmt.Println("Enter the key's passphrase:")
-    var v string;
-    fmt.Scan(&v)
-    passphrase := []byte(v)
+    scanner := bufio.NewScanner(os.Stdin)
+    scanner.Scan()
+    err := scanner.Err()
+    if err != nil {
+        return err
+    }
+    passphrase := scanner.Text()
+    passphraseBytes := []byte(passphrase)
 
     keygenhandle := crypto.PGPWithProfile(profile.RFC9580()).KeyGeneration().AddUserId("createdwithwpgp", "nowhere@goesnowhere.com").New()
     privKey, err := keygenhandle.GenerateKeyWithSecurity(constants.HighSecurity)
     if err != nil {
         return err
     }
-    lockedKey, err := pgp.LockKey(privKey, passphrase)
+    lockedKey, err := pgp.LockKey(privKey, passphraseBytes)
     if err != nil {
         return err
     }

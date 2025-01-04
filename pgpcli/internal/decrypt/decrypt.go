@@ -1,7 +1,9 @@
 package decrypt
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"pgpcli/internal/keyutils"
 
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
@@ -17,9 +19,13 @@ func Decrypt() error {
     clipText := string(clipboardBytes)
 
     fmt.Println("Enter key passphrase:")
-    var passphraseBytes string
-    fmt.Scan(&passphraseBytes)
-    passphrase := string(passphraseBytes)
+    scanner := bufio.NewScanner(os.Stdin)
+    scanner.Scan()
+    err = scanner.Err()
+    if err != nil {
+        return err
+    }
+    passphrase := scanner.Text()
 
     privKey, err := keyutils.GetMainPrivKey(passphrase)
     if err != nil {
