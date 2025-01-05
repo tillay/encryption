@@ -23,6 +23,14 @@ func CreateKey() error {
     passphrase := scanner.Text()
     passphraseBytes := []byte(passphrase)
 
+    fmt.Println("Enter key name:")
+    scanner.Scan()
+    err = scanner.Err()
+    if err != nil {
+        return err
+    }
+    keyname := scanner.Text()
+
     keygenhandle := crypto.PGPWithProfile(profile.RFC9580()).KeyGeneration().AddUserId("createdwithwpgp", "nowhere@goesnowhere.com").New()
     privKey, err := keygenhandle.GenerateKeyWithSecurity(constants.HighSecurity)
     if err != nil {
@@ -50,11 +58,11 @@ func CreateKey() error {
         return err
     }
 
-    _, err = os.Stat(homeDir + "/wpgp/MAINKEY")
+    _, err = os.Stat(homeDir + "/wpgp/" + keyname)
     if !(os.IsNotExist(err)) {
         os.Remove(homeDir + "/wpgp/MAINKEY")
     }
-    keyFile, err := os.Create(homeDir + "/wpgp/MAINKEY")
+    keyFile, err := os.Create(homeDir + "/wpgp/" + keyname)
     if err != nil {
         return err
     }
@@ -68,11 +76,11 @@ func CreateKey() error {
         return err
     }
 
-    _, err = os.Stat(homeDir + "/wpgp/MAINKEY.pub")
+    _, err = os.Stat(homeDir + "/wpgp/" + keyname + ".pub")
     if !(os.IsNotExist(err)) {
-        os.Remove(homeDir + "/wpgp/MAINKEY.pub")
+        os.Remove(homeDir + "/wpgp/" + keyname + ".pub")
     }
-    pubKeyFile, err := os.Create(homeDir + "/wpgp/MAINKEY.pub")
+    pubKeyFile, err := os.Create(homeDir + "/wpgp/" + keyname + ".pub")
     if err != nil {
         return err
     }

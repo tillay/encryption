@@ -7,13 +7,13 @@ import (
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
 )
 
-func GetMainPrivKey(passphrase string) (crypto.Key, error) {
+func GetPrivKey(passphrase string, keyname string) (crypto.Key, error) {
     homeDir, err := os.UserHomeDir()
     if err != nil {
         return crypto.Key{}, err
     }
 
-    lockedKeyFile, err := os.Open(homeDir + "/wpgp/MAINKEY")
+    lockedKeyFile, err := os.Open(homeDir + "/wpgp/" + keyname)
     if err != nil {
         return crypto.Key{}, err
     }

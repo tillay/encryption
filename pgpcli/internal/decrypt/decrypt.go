@@ -25,7 +25,15 @@ func Decrypt() error {
     }
     passphrase := scanner.Text()
 
-    privKey, err := keyutils.GetMainPrivKey(passphrase)
+    fmt.Println("Enter key name:")
+    scanner.Scan()
+    err = scanner.Err()
+    if err != nil {
+        return err
+    }
+    keyname := scanner.Text()
+
+    privKey, err := keyutils.GetPrivKey(passphrase, keyname)
     if err != nil {
         return err
     }
