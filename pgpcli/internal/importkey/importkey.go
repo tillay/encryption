@@ -54,5 +54,6 @@ func ImportKey() error {
         return err
     }
 
+    clipboard.Write(clipboard.FmtText, []byte(""))
     return nil
 }

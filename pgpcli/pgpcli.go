@@ -10,14 +10,19 @@ import (
 	"pgpcli/internal/encrypt"
 	"pgpcli/internal/export"
 	"pgpcli/internal/importkey"
+	"pgpcli/internal/keyutils"
 	"pgpcli/internal/listkeys"
 )
 
 func main() {
-    action := ""
-	if len(os.Args) > 1 {
-        	action = os.Args[1]
+    action, err := keyutils.CheckClipboardForKey()
+    if err != nil {
+        log.Fatal(err)
     }
+	if len(os.Args) > 1 {
+        action = os.Args[1]
+    }
+
     processAction(action)
 }
 
@@ -44,11 +49,7 @@ func processAction(action string) {
             log.Fatal(err)
         }
     case "export", "3":
-        if len(os.Args) < 3 {
-            handleExport()
-            return
-        }
-        err := export.Export(os.Args[2])
+        err := export.HandleExport()
         if err != nil {
             log.Fatal(err)
         }
@@ -77,23 +78,8 @@ func processAction(action string) {
     }
 }
 
-func handleExport() {
-	var filepath string
-	if len(os.Args) >= 3 {
-		filepath = os.Args[2]
-	} else {
-		fmt.Print("Enter the file path to export the key: ")
-		scanner := bufio.NewScanner(os.Stdin)
-		if scanner.Scan() {
-			filepath = scanner.Text()
-		}
-	}
 
-	if err := export.Export(filepath); err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("Key successfully exported to %s\n", filepath)
-}
+
 func helpMessage() {
 	fmt.Println(
 		`Usage:

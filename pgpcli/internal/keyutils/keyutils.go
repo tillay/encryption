@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
+	"golang.design/x/clipboard"
 )
 
 func GetMainPrivKey(passphrase string) (crypto.Key, error) {
@@ -49,4 +50,24 @@ func GetPubKeyOfUser(user string) (crypto.Key, error) {
     pubKey, err := crypto.NewKeyFromArmored(pubKeyText)
 
     return *pubKey, nil
+}
+
+func CheckClipboardForKey() (string, error) {
+    err := clipboard.Init()
+    if err != nil {
+        return "", err
+    }
+    clipboardBytes := clipboard.Read(clipboard.FmtText)
+    clipText := string(clipboardBytes)
+
+    _, err = crypto.NewKeyFromArmored(clipText)
+    if err == nil {
+        return "import", nil
+    }
+
+    if crypto.IsPGPMessage(clipText) {
+        return "decrypt", nil
+    }
+
+    return "", nil
 }

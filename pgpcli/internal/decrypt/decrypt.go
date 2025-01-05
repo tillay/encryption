@@ -37,7 +37,8 @@ func Decrypt() error {
     decrypted, err := decHandle.Decrypt([]byte(clipText), crypto.Armor)
     myMessage := string(decrypted.Bytes())
 
-    fmt.Println(myMessage)
+    clipboard.Write(clipboard.FmtText, []byte(myMessage))
+    fmt.Println("Encrypted message copied to clipboard!")
 
     return nil
 }
