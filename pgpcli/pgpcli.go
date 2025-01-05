@@ -45,7 +45,8 @@ func processAction(action string) {
         }
     case "export", "3":
         if len(os.Args) < 3 {
-            log.Fatal("Put in a filepath silly!")
+            handleExport()
+            return
         }
         err := export.Export(os.Args[2])
         if err != nil {
