@@ -104,12 +104,13 @@ func processAction(action string) {
     case "help":
         helpMessage()
     default:
-        fmt.Println(`1. Create key
-2. Import key from clipboard
-3. Export key to file
-4. Encrypt message
-5. Decrypt a message
-6. List available keys`)
+        fmt.Println(`1. creates a key
+2. imports a key from clipboard
+3. exports a key to file
+4. encrypts a message
+5. decrypts a message
+6. lists available keys
+7. prints a help message`)
         scanner := bufio.NewScanner(os.Stdin)
         scanner.Scan()
         err := scanner.Err()
