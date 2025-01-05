@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"pgpcli/internal/keyutils"
+	"pgpcli/lib/clipboard"
 
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
 )
@@ -49,6 +50,11 @@ func Encrypt() error {
     pgpMessage, err := encHandle.Encrypt([]byte(v))
     armored, err := pgpMessage.Armor()
 
-    fmt.Println(armored)
+    err = clipboard.Write(armored)
+    if err != nil {
+        return err
+    }
+    fmt.Println("Encrypted message copied to clipboard!")
+
     return nil
 }

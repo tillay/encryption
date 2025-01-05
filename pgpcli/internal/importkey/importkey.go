@@ -4,18 +4,16 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"pgpcli/lib/clipboard"
 
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
-	"golang.design/x/clipboard"
 )
 
 func ImportKey() error {
-    err := clipboard.Init()
+    clipText, err := clipboard.Read()
     if err != nil {
         return err
     }
-    clipboardBytes := clipboard.Read(clipboard.FmtText)
-    clipText := string(clipboardBytes)
 
     _, err = crypto.NewKeyFromArmored(clipText)
     if err != nil {
@@ -54,6 +52,9 @@ func ImportKey() error {
         return err
     }
 
-    clipboard.Write(clipboard.FmtText, []byte(""))
+    err = clipboard.Write("")
+    if err != nil {
+        return err
+    }
     return nil
 }

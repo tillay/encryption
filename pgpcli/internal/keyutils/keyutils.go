@@ -2,9 +2,9 @@ package keyutils
 
 import (
 	"os"
+	"pgpcli/lib/clipboard"
 
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
-	"golang.design/x/clipboard"
 )
 
 func GetMainPrivKey(passphrase string) (crypto.Key, error) {
@@ -53,12 +53,10 @@ func GetPubKeyOfUser(user string) (crypto.Key, error) {
 }
 
 func CheckClipboardForKey() (string, error) {
-    err := clipboard.Init()
+    clipText, err := clipboard.Read()
     if err != nil {
         return "", err
     }
-    clipboardBytes := clipboard.Read(clipboard.FmtText)
-    clipText := string(clipboardBytes)
 
     _, err = crypto.NewKeyFromArmored(clipText)
     if err == nil {

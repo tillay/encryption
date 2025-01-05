@@ -5,18 +5,16 @@ import (
 	"fmt"
 	"os"
 	"pgpcli/internal/keyutils"
+	"pgpcli/lib/clipboard"
 
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
-	"golang.design/x/clipboard"
 )
 
 func Decrypt() error {
-    err := clipboard.Init()
+    clipText, err := clipboard.Read()
     if err != nil {
         return err
     }
-    clipboardBytes := clipboard.Read(clipboard.FmtText)
-    clipText := string(clipboardBytes)
 
     fmt.Println("Enter key passphrase:")
     scanner := bufio.NewScanner(os.Stdin)
@@ -37,7 +35,10 @@ func Decrypt() error {
     decrypted, err := decHandle.Decrypt([]byte(clipText), crypto.Armor)
     myMessage := string(decrypted.Bytes())
 
-    clipboard.Write(clipboard.FmtText, []byte(myMessage))
+    err = clipboard.Write(myMessage)
+    if err != nil {
+        return err
+    }
     fmt.Println("Encrypted message copied to clipboard!")
 
     return nil
