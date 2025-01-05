@@ -12,6 +12,7 @@ import (
 	"pgpcli/internal/importkey"
 	"pgpcli/internal/keyutils"
 	"pgpcli/internal/listkeys"
+	"pgpcli/internal/remove"
 )
 
 func main() {
@@ -58,7 +59,12 @@ func processAction(action string) {
         if err != nil {
             log.Fatal(err)
         }
-    case "help":
+    case "remove", "7":
+        err := remove.Remove()
+        if err != nil {
+            log.Fatal(err)
+        }
+    case "help", "8":
         helpMessage()
     default:
         fmt.Println(`1. creates a key
@@ -67,7 +73,8 @@ func processAction(action string) {
 4. encrypts a message
 5. decrypts a message
 6. lists available keys
-7. prints a help message`)
+7. removes a key
+8. prints a help message`)
         scanner := bufio.NewScanner(os.Stdin)
         scanner.Scan()
         err := scanner.Err()
@@ -89,5 +96,6 @@ func helpMessage() {
 		./pgpcli encrypt           Encrypts a message
 		./pgpcli decrypt           Decrypts a message from clipboard
 		./pgpcli list              Lists all available public keys
+        ./pgpcli remove            Remove a key
 		./pgpcli help              Displays this help message`)
 }
