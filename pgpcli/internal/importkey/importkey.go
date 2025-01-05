@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"pgpcli/internal/listkeys"
 	"pgpcli/lib/clipboard"
 
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
@@ -19,6 +20,17 @@ func ImportKey() error {
     if err != nil {
         return err
     }
+
+    fmt.Println()
+    fmt.Println("Current key names:")
+    currentKeys, err := listkeys.GetPubkeys()
+    if err != nil {
+        return err
+    }
+    for _, v := range currentKeys {
+        fmt.Println(v)
+    }
+    fmt.Println()
 
     fmt.Println("Enter username (remember this, its case sensitive!):")
     scanner := bufio.NewScanner(os.Stdin)

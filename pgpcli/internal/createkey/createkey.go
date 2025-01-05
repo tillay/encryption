@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"pgpcli/internal/listkeys"
 
 	"github.com/ProtonMail/gopenpgp/v3/constants"
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
@@ -13,10 +14,21 @@ import (
 func CreateKey() error {
     pgp := crypto.PGP()
 
+    fmt.Println()
+    currentKeys, err := listkeys.GetPrivkeys()
+    if err != nil {
+        return err
+    }
+    fmt.Println("Current key names:")
+    for _, v := range currentKeys {
+        fmt.Println(v)
+    }
+    fmt.Println()
+
     fmt.Println("Enter the key's passphrase:")
     scanner := bufio.NewScanner(os.Stdin)
     scanner.Scan()
-    err := scanner.Err()
+    err = scanner.Err()
     if err != nil {
         return err
     }

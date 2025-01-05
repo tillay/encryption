@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"pgpcli/internal/keyutils"
+	"pgpcli/internal/listkeys"
 	"pgpcli/lib/clipboard"
 
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
@@ -26,6 +27,18 @@ func Encrypt() error {
     if err != nil {
         return err
     }
+
+    fmt.Println()
+    fmt.Println("Current key names:")
+    currentKeys, err := listkeys.GetPubkeys()
+    if err != nil {
+        return err
+    }
+    for _, v := range currentKeys {
+        fmt.Println(v)
+    }
+    fmt.Println()
+
 
     for {
         fmt.Println("Name of next recipient, or type HALT:")

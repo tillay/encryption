@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"pgpcli/internal/keyutils"
+	"pgpcli/internal/listkeys"
 	"pgpcli/lib/clipboard"
 
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
@@ -16,15 +17,18 @@ func Decrypt() error {
         return err
     }
 
-    fmt.Println("Enter key passphrase:")
-    scanner := bufio.NewScanner(os.Stdin)
-    scanner.Scan()
-    err = scanner.Err()
+    fmt.Println()
+    currentKeys, err := listkeys.GetPrivkeys()
     if err != nil {
         return err
     }
-    passphrase := scanner.Text()
+    fmt.Println("Current key names:")
+    for _, v := range currentKeys {
+        fmt.Println(v)
+    }
+    fmt.Println()
 
+    scanner := bufio.NewScanner(os.Stdin)
     fmt.Println("Enter key name:")
     scanner.Scan()
     err = scanner.Err()
@@ -32,6 +36,16 @@ func Decrypt() error {
         return err
     }
     keyname := scanner.Text()
+
+    fmt.Println("Enter key passphrase:")
+    scanner.Scan()
+    err = scanner.Err()
+    if err != nil {
+        return err
+    }
+    passphrase := scanner.Text()
+
+
 
     privKey, err := keyutils.GetPrivKey(passphrase, keyname)
     if err != nil {

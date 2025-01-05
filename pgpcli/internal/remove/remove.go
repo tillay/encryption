@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"pgpcli/internal/listkeys"
 )
 
 func Remove() error {
@@ -19,16 +20,49 @@ Else. abort`)
         return err
     }
     u := scanner.Text()
+
+    pubkeys, err := listkeys.GetPubkeys()
+    if err != nil {
+        return err
+    }
+    privkeys, err := listkeys.GetPrivkeys()
+    if err != nil {
+        return err
+    }
+
     switch u {
     case "1":
+        fmt.Println()
+        fmt.Println("Pubkeys:")
+        for _, v := range pubkeys {
+            fmt.Println(v)
+        }
+
         v, err := prompt()
         if err != nil { return err }
         removePubKey(v)
     case "2":
+        fmt.Println()
+        fmt.Println("Privkeys:")
+        for _, v := range privkeys {
+            fmt.Println(v)
+        }
+
         v, err := prompt()
         if err != nil { return err }
         removePrivKey(v)
     case "3":
+        fmt.Println()
+        fmt.Println("Pubkeys:")
+        for _, v := range pubkeys {
+            fmt.Println(v)
+        }
+        fmt.Println("\nPrivkeys:")
+        for _, v := range privkeys {
+            fmt.Println(v)
+        }
+        fmt.Println()
+
         v, err := prompt()
         if err != nil { return err }
         removePubKey(v)

@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"pgpcli/internal/createkey"
+	"pgpcli/internal/listkeys"
 )
 
 func Export(filename string) error {
@@ -13,6 +14,18 @@ func Export(filename string) error {
     if err != nil {
         return err
     }
+
+    fmt.Println()
+    fmt.Println("Current pubkeys are:")
+    currentKeys, err := listkeys.GetPubkeys()
+    if err != nil {
+        return err
+    }
+    for _, v := range currentKeys {
+        fmt.Println(v)
+    }
+    fmt.Println()
+
 
     src, err := os.Open(homeDir + "/wpgp/MAINKEY.pub")
     if err != nil {
