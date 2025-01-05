@@ -9,6 +9,7 @@ import (
 	"pgpcli/lib/clipboard"
 
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
+	"gitlab.com/david_mbuvi/go_asterisks"
 )
 
 func Decrypt() error {
@@ -38,14 +39,11 @@ func Decrypt() error {
     keyname := scanner.Text()
 
     fmt.Println("Enter key passphrase:")
-    scanner.Scan()
-    err = scanner.Err()
+    passphraseBytes, err := go_asterisks.GetUsersPassword("", true, os.Stdin, os.Stdout)
     if err != nil {
         return err
     }
-    passphrase := scanner.Text()
-
-
+    passphrase := string(passphraseBytes)
 
     privKey, err := keyutils.GetPrivKey(passphrase, keyname)
     if err != nil {

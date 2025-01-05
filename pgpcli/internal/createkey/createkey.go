@@ -10,6 +10,8 @@ import (
 	"github.com/ProtonMail/gopenpgp/v3/constants"
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
 	"github.com/ProtonMail/gopenpgp/v3/profile"
+
+    "gitlab.com/david_mbuvi/go_asterisks"
 )
 
 func CreateKey() error {
@@ -28,13 +30,11 @@ func CreateKey() error {
 
     fmt.Println("Enter the key's passphrase:")
     scanner := bufio.NewScanner(os.Stdin)
-    scanner.Scan()
-    err = scanner.Err()
+    passphrase, err := go_asterisks.GetUsersPassword("", true, os.Stdin, os.Stdout)
     if err != nil {
         return err
     }
-    passphrase := scanner.Text()
-    passphraseBytes := []byte(passphrase)
+    passphraseBytes := passphrase
 
     fmt.Println("Enter key name:")
     scanner.Scan()
