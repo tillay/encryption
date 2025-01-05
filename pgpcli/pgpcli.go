@@ -28,6 +28,7 @@ func main() {
 }
 
 func processAction(action string) {
+    log.SetFlags(log.LstdFlags)
     switch action {
     case "create", "1":
         err := createkey.CreateKey()

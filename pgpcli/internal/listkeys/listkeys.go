@@ -1,6 +1,7 @@
 package listkeys
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -34,6 +35,10 @@ func GetPubkeys() ([]string, error) {
         return make([]string, 0), err
     }
 
+    if _, err := os.Stat(homeDir + "/wgpg/"); errors.Is(err, os.ErrNotExist) {
+        return make([]string, 0), nil
+    }
+
     entries, err := os.ReadDir(homeDir + "/wpgp/")
     if err != nil {
         return make([]string, 0), err
@@ -53,6 +58,10 @@ func GetPrivkeys() ([]string, error) {
     homeDir, err := os.UserHomeDir()
     if err != nil {
         return make([]string, 0), err
+    }
+
+    if _, err := os.Stat(homeDir + "/wgpg/"); errors.Is(err, os.ErrNotExist) {
+        return make([]string, 0), nil
     }
 
     entries, err := os.ReadDir(homeDir + "/wpgp/")

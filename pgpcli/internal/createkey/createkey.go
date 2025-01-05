@@ -2,6 +2,7 @@ package createkey
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"pgpcli/internal/listkeys"
@@ -59,8 +60,8 @@ func CreateKey() error {
     }
 
     _, err = os.Stat(homeDir + "/wpgp")
-    if os.IsNotExist(err) {
-        err = os.Mkdir(homeDir + "/wpgp", 0755)
+    if errors.Is(err, os.ErrNotExist) {
+        err = os.Mkdir(homeDir + "/wpgp/", 0755)
         if err != nil {
             return err
         }
@@ -71,8 +72,8 @@ func CreateKey() error {
     }
 
     _, err = os.Stat(homeDir + "/wpgp/" + keyname)
-    if !(os.IsNotExist(err)) {
-        os.Remove(homeDir + "/wpgp/MAINKEY")
+    if err == nil {
+        os.Remove(homeDir + "/wpgp/" + keyname)
     }
     keyFile, err := os.Create(homeDir + "/wpgp/" + keyname)
     if err != nil {
@@ -89,7 +90,7 @@ func CreateKey() error {
     }
 
     _, err = os.Stat(homeDir + "/wpgp/" + keyname + ".pub")
-    if !(os.IsNotExist(err)) {
+    if err == nil {
         os.Remove(homeDir + "/wpgp/" + keyname + ".pub")
     }
     pubKeyFile, err := os.Create(homeDir + "/wpgp/" + keyname + ".pub")
