@@ -1,7 +1,6 @@
 package listkeys
 
 import (
-	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -35,7 +34,8 @@ func GetPubkeys() ([]string, error) {
         return make([]string, 0), err
     }
 
-    if _, err := os.Stat(homeDir + "/wgpg/"); errors.Is(err, os.ErrNotExist) {
+    if !fileExists(homeDir + "/wpgp/") {
+        fmt.Println("true")
         return make([]string, 0), nil
     }
 
@@ -60,7 +60,7 @@ func GetPrivkeys() ([]string, error) {
         return make([]string, 0), err
     }
 
-    if _, err := os.Stat(homeDir + "/wgpg/"); errors.Is(err, os.ErrNotExist) {
+    if !fileExists(homeDir + "/wpgp/") {
         return make([]string, 0), nil
     }
 
@@ -77,4 +77,12 @@ func GetPrivkeys() ([]string, error) {
     }
 
     return privkeys, nil
+}
+
+func fileExists(path string) bool {
+    _, err := os.Stat(path)
+    if os.IsNotExist(err) {
+        return false
+    }
+    return err == nil
 }

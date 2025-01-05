@@ -15,6 +15,19 @@ func Export(filename string) error {
         return err
     }
 
+    pubKeys, err := listkeys.GetPubkeys()
+    if err != nil {
+        return err
+    }
+
+    if len(pubKeys) == 0 {
+        fmt.Println("No key found, creating new key")
+        err = createkey.CreateKey()
+        if err != nil {
+            return err
+        }
+    }
+
     fmt.Println()
     fmt.Println("Current pubkeys are:")
     currentKeys, err := listkeys.GetPubkeys()
@@ -26,18 +39,18 @@ func Export(filename string) error {
     }
     fmt.Println()
 
-
-    src, err := os.Open(homeDir + "/wpgp/MAINKEY.pub")
+    fmt.Println("Key name:")
+    scan := bufio.NewScanner(os.Stdin)
+    scan.Scan()
+    err = scan.Err()
     if err != nil {
-        fmt.Println("No key found, creating new key")
-        err = createkey.CreateKey()
-        if err != nil {
-            return err
-        }
-        src, err = os.Open(homeDir + "/wpgp/MAINKEY.pub")
-        if err != nil {
-            return err
-        }
+        return err
+    }
+    keyname := scan.Text()
+
+    src, err := os.Open(homeDir + "/wpgp/" + keyname + ".pub")
+    if err != nil {
+        return err
     }
     defer src.Close()
 
