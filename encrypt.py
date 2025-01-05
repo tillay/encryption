@@ -1,18 +1,13 @@
 import sys, subprocess, secrets, io, os, base64, random, string, binascii, re
 from PIL import Image, UnidentifiedImageError
 from hashlib import sha256
-try:
-    from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-    from cryptography.hazmat.primitives import hashes
-    from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-    from cryptography.hazmat.backends import default_backend
-except ModuleNotFoundError:
-    print("please install the cryptography package")
-    from Crypto.Cipher import AES
-    from Crypto.Util.Padding import pad, unpad
-except ModuleNotFoundError:
-    print("please install the pycryptodome package")
-    sys.exit(1)
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.backends import default_backend
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+
 # Constants
 PASSWORD_FILE = "/tmp/key"
 prefix_text, prefix_password, prefix_image = "&&", "@@", "££"
