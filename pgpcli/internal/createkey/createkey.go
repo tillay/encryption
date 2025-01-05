@@ -86,7 +86,7 @@ func CreateKey() error {
         return err
     }
 
-    fmt.Println("New key created as " + pubKeyFile.Name() + ". Export it with ./pgpcli export ./myfile")
+    fmt.Println("New key created as " + pubKeyFile.Name())
 
     return nil
 }

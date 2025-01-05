@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"pgpcli/internal/createkey"
 )
 
 func Export(filename string) error {
@@ -15,7 +16,15 @@ func Export(filename string) error {
 
     src, err := os.Open(homeDir + "/wpgp/MAINKEY.pub")
     if err != nil {
-        return err
+        fmt.Println("No key found, creating new key")
+        err = createkey.CreateKey()
+        if err != nil {
+            return err
+        }
+        src, err = os.Open(homeDir + "/wpgp/MAINKEY.pub")
+        if err != nil {
+            return err
+        }
     }
     defer src.Close()
 
@@ -29,6 +38,7 @@ func Export(filename string) error {
     // Copy source to destination
     _, err = io.Copy(dst, src)
     if err != nil {
+        fmt.Println("here")
         return err
     }
 
