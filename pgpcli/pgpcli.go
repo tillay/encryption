@@ -88,14 +88,13 @@ func processAction(action string) {
 
 
 func helpMessage() {
-	fmt.Println(
-		`Usage:
-		./pgpcli create            Creates a new key
-		./pgpcli import            Imports a key from clipboard
-		./pgpcli export <filename> Exports a key to a file
-		./pgpcli encrypt           Encrypts a message
-		./pgpcli decrypt           Decrypts a message from clipboard
-		./pgpcli list              Lists all available public keys
-        ./pgpcli remove            Remove a key
-		./pgpcli help              Displays this help message`)
+	fmt.Println(`Usage:
+./pgpcli create            Creates a new key
+./pgpcli import            Imports a key from clipboard
+./pgpcli export <filename> Exports a key to a file
+./pgpcli encrypt           Encrypts a message
+./pgpcli decrypt           Decrypts a message from clipboard
+./pgpcli list              Lists all available public keys
+./pgpcli remove            Remove a key
+./pgpcli help              Displays this help message`)
 }
