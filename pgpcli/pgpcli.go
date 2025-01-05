@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"log"
 	"os"
@@ -19,28 +20,32 @@ func main() {
     }
     action := os.Args[1]
 
+    processAction(action)
+}
+
+func processAction(action string) {
     switch action {
-    case "create":
+    case "create", "1":
         err := createkey.CreateKey()
         if err != nil {
             log.Fatal(err)
         }
-    case "encrypt":
+    case "encrypt", "4":
         err := encrypt.Encrypt()
         if err != nil {
             log.Fatal(err)
         }
-    case "import":
+    case "import", "2":
         err := importkey.ImportKey()
         if err != nil {
             log.Fatal(err)
         }
-    case "decrypt":
+    case "decrypt", "5":
         err := decrypt.Decrypt()
         if err != nil {
             log.Fatal(err)
         }
-    case "export":
+    case "export", "3":
         if len(os.Args) < 3 {
             log.Fatal("Put in a filepath silly!")
         }
@@ -48,14 +53,27 @@ func main() {
         if err != nil {
             log.Fatal(err)
         }
-    case "list-keys":
+    case "list-keys", "6":
         err := listkeys.ListKeys()
         if err != nil {
             log.Fatal(err)
         }
-    default:
+    case "help":
         helpMessage()
-        log.Fatal()
+    default:
+        fmt.Println(`1. Create key
+2. Import key from clipboard
+3. Export key to file
+4. Encrypt message
+5. Decrypt a message
+6. List available keys`)
+        scanner := bufio.NewScanner(os.Stdin)
+        scanner.Scan()
+        err := scanner.Err()
+        if err != nil {
+            log.Fatal(err)
+        }
+        processAction(scanner.Text())
     }
 }
 
