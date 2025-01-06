@@ -54,7 +54,8 @@ func Encrypt() error {
         }
         nextKey, err := keyutils.GetPubKeyOfUser(next)
         if err != nil {
-            return err
+            fmt.Println("That didn't work, try again.")
+            continue
         }
         keyring.AddKey(&nextKey)
     }
