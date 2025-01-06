@@ -60,9 +60,17 @@ func Encrypt() error {
         keyring.AddKey(&nextKey)
     }
     encHandle, err := pgp.Encryption().Recipients(keyring).New()
-
+    if err != nil {
+        return err
+    }
     pgpMessage, err := encHandle.Encrypt([]byte(v))
+    if err != nil {
+        return err
+    }
     armored, err := pgpMessage.Armor()
+    if err != nil {
+        return err
+    }
 
     err = clipboard.Write(armored)
     if err != nil {
