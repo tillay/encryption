@@ -41,7 +41,7 @@ func Encrypt() error {
 
 
     for {
-        fmt.Println("Name of next recipient, or type HALT:")
+        fmt.Println("Name of next recipient, or type q:")
         scan := bufio.NewScanner(os.Stdin)
         scan.Scan()
         err := scan.Err()
@@ -49,7 +49,7 @@ func Encrypt() error {
             return err
         }
         next := scan.Text()
-        if next == "HALT" {
+        if next == "q" {
             break
         }
         nextKey, err := keyutils.GetPubKeyOfUser(next)

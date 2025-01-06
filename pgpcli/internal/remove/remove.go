@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"pgpcli/internal/listkeys"
+	"strings"
 )
 
 func Remove() error {
@@ -53,13 +54,13 @@ Else. abort`)
         removePrivKey(v)
     case "3": // replace with stored keypairs
         fmt.Println()
-        fmt.Println("Pubkeys:")
-        for _, v := range pubkeys {
-            fmt.Println(v)
-        }
-        fmt.Println("\nPrivkeys:")
+        fmt.Println("Keypairs:")
         for _, v := range privkeys {
-            fmt.Println(v)
+            for _, w := range pubkeys {
+                if w == strings.Trim(w, ".pub") {
+                    fmt.Println(v)
+                }
+            }
         }
         fmt.Println()
 
