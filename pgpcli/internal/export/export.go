@@ -29,7 +29,7 @@ func Export(filename string) error {
     }
 
     fmt.Println()
-    fmt.Println("Current pubkeys are:")
+    fmt.Println("Current stored public keys are:")
     currentKeys, err := listkeys.GetPubkeys()
     if err != nil {
         return err
@@ -76,7 +76,7 @@ func HandleExport() error {
 	if len(os.Args) >= 3 {
 		filepath = os.Args[2]
 	} else {
-		fmt.Print("Enter the file path to export the key: ")
+		fmt.Print("Enter the file path or name to export the key to: ")
 		scanner := bufio.NewScanner(os.Stdin)
 		if scanner.Scan() {
 			filepath = scanner.Text()

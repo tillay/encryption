@@ -22,7 +22,7 @@ func ImportKey() error {
     }
 
     fmt.Println()
-    fmt.Println("Current key names:")
+    fmt.Println("Already stored public key names:")
     currentKeys, err := listkeys.GetPubkeys()
     if err != nil {
         return err
@@ -32,7 +32,7 @@ func ImportKey() error {
     }
     fmt.Println()
 
-    fmt.Println("Enter username (remember this, its case sensitive!):")
+    fmt.Println("Enter new key name (public key):")
     scanner := bufio.NewScanner(os.Stdin)
     scanner.Scan()
     err = scanner.Err()

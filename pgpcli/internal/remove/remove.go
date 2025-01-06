@@ -33,7 +33,7 @@ Else. abort`)
     switch u {
     case "1":
         fmt.Println()
-        fmt.Println("Pubkeys:")
+        fmt.Println("Stored public keys:")
         for _, v := range pubkeys {
             fmt.Println(v)
         }
@@ -43,7 +43,7 @@ Else. abort`)
         removePubKey(v)
     case "2":
         fmt.Println()
-        fmt.Println("Privkeys:")
+        fmt.Println("Stored private keys:")
         for _, v := range privkeys {
             fmt.Println(v)
         }
@@ -51,7 +51,7 @@ Else. abort`)
         v, err := prompt()
         if err != nil { return err }
         removePrivKey(v)
-    case "3":
+    case "3": // replace with stored keypairs
         fmt.Println()
         fmt.Println("Pubkeys:")
         for _, v := range pubkeys {

@@ -12,7 +12,7 @@ import (
 )
 
 func Encrypt() error {
-    fmt.Println("Encrypted message:")
+    fmt.Println("Message to encrypt:")
     scanner := bufio.NewScanner(os.Stdin)
     scanner.Scan()
     err := scanner.Err()
@@ -29,7 +29,7 @@ func Encrypt() error {
     }
 
     fmt.Println()
-    fmt.Println("Current key names:")
+    fmt.Println("Stored recepient options (public keys):")
     currentKeys, err := listkeys.GetPubkeys()
     if err != nil {
         return err

@@ -23,14 +23,14 @@ func Decrypt() error {
     if err != nil {
         return err
     }
-    fmt.Println("Current key names:")
+    fmt.Println("Available decrypting keys (private keys):")
     for _, v := range currentKeys {
         fmt.Println(v)
     }
     fmt.Println()
 
     scanner := bufio.NewScanner(os.Stdin)
-    fmt.Println("Enter key name:")
+    fmt.Println("Enter your private key name:")
     scanner.Scan()
     err = scanner.Err()
     if err != nil {
@@ -38,7 +38,7 @@ func Decrypt() error {
     }
     keyname := scanner.Text()
 
-    fmt.Println("Enter key passphrase:")
+    fmt.Println("Enter your private key passphrase:")
     passphraseBytes, err := go_asterisks.GetUsersPassword("", true, os.Stdin, os.Stdout)
     if err != nil {
         return err
@@ -59,7 +59,7 @@ func Decrypt() error {
     if err != nil {
         return err
     }
-    fmt.Println("Encrypted message copied to clipboard!")
+    fmt.Println("Decrypted message copied to clipboard!")
 
     return nil
 }

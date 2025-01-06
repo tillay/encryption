@@ -16,11 +16,11 @@ func ListKeys() error {
         return err
     }
 
-    fmt.Println("Pubkeys:")
+    fmt.Println("Public keys:")
     for _, v := range pubkeys {
         fmt.Println(v)
     }
-    fmt.Println("\nPrivkeys:")
+    fmt.Println("\nPrivate keys:")
     for _, v := range privkeys {
         fmt.Println(v)
     }

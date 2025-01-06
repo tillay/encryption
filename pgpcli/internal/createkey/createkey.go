@@ -22,13 +22,13 @@ func CreateKey() error {
     if err != nil {
         return err
     }
-    fmt.Println("Current key names:")
+    fmt.Println("Already stored key names (can be overwritten):")
     for _, v := range currentKeys {
         fmt.Println(v)
     }
     fmt.Println()
 
-    fmt.Println("Enter the key's passphrase:")
+    fmt.Println("Enter the new key's passphrase:")
     scanner := bufio.NewScanner(os.Stdin)
     passphrase, err := go_asterisks.GetUsersPassword("", true, os.Stdin, os.Stdout)
     if err != nil {
@@ -36,7 +36,7 @@ func CreateKey() error {
     }
     passphraseBytes := passphrase
 
-    fmt.Println("Enter key name:")
+    fmt.Println("Enter new key name:")
     scanner.Scan()
     err = scanner.Err()
     if err != nil {
