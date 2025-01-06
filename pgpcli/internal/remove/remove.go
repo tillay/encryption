@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"pgpcli/internal/listkeys"
-	"strings"
 )
 
 func Remove() error {
@@ -57,7 +56,7 @@ Else. abort`)
         fmt.Println("Keypairs:")
         for _, v := range privkeys {
             for _, w := range pubkeys {
-                if w == strings.Trim(w, ".pub") {
+                if w == v {
                     fmt.Println(v)
                 }
             }
