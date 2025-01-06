@@ -28,14 +28,7 @@ func CreateKey() error {
     }
     fmt.Println()
 
-    fmt.Println("Enter the new key's passphrase:")
     scanner := bufio.NewScanner(os.Stdin)
-    passphrase, err := go_asterisks.GetUsersPassword("", true, os.Stdin, os.Stdout)
-    if err != nil {
-        return err
-    }
-    passphraseBytes := passphrase
-
     fmt.Println("Enter new key name:")
     scanner.Scan()
     err = scanner.Err()
@@ -43,6 +36,13 @@ func CreateKey() error {
         return err
     }
     keyname := scanner.Text()
+
+    fmt.Println("Enter the new key's passphrase:")
+    passphrase, err := go_asterisks.GetUsersPassword("", true, os.Stdin, os.Stdout)
+    if err != nil {
+        return err
+    }
+    passphraseBytes := passphrase
 
     keygenhandle := crypto.PGPWithProfile(profile.RFC9580()).KeyGeneration().AddUserId("createdwithwpgp", "nowhere@goesnowhere.com").New()
     privKey, err := keygenhandle.GenerateKeyWithSecurity(constants.HighSecurity)

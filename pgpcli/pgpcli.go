@@ -68,6 +68,7 @@ func processAction(action string) {
     case "help", "8":
         helpMessage()
     default:
+        fmt.Println("Couldn't process choice, please input one:")
         fmt.Println(`1. creates a key
 2. imports a key from clipboard
 3. exports a key to file

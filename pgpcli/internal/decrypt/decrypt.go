@@ -2,6 +2,7 @@ package decrypt
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"pgpcli/internal/keyutils"
@@ -41,7 +42,7 @@ func Decrypt() error {
     fmt.Println("Enter your private key passphrase:")
     passphraseBytes, err := go_asterisks.GetUsersPassword("", true, os.Stdin, os.Stdout)
     if err != nil {
-        return err
+        return errors.New("Incorrect password")
     }
     passphrase := string(passphraseBytes)
 
