@@ -52,7 +52,13 @@ func Decrypt() error {
 
     pgp := crypto.PGP()
     decHandle, err := pgp.Decryption().DecryptionKey(&privKey).New()
+    if err != nil {
+        return err
+    }
     decrypted, err := decHandle.Decrypt([]byte(clipText), crypto.Armor)
+    if err != nil {
+        return err
+    }
     myMessage := string(decrypted.Bytes())
 
     err = clipboard.Write(myMessage)
