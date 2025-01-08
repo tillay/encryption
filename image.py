@@ -75,5 +75,5 @@ else:
         copy_to_clipboard(prefix_image.encode() + encrypted_image)
         print("Image encrypted and copied to clipboard.")
     except (UnidentifiedImageError, ValueError) as e:
-        print("Error: Clipboard does not contain a valid encrypted or decrypted image./nUse encrypt.py for text encryption.")
+        print("Error: Clipboard does not contain a valid encrypted or decrypted image. Use encrypt.py for text encryption.")
         sys.exit(1)
