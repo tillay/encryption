@@ -1,15 +1,9 @@
-import sys
-import subprocess
-import io
-import os
-import base64
+import sys, subprocess, io, os, base64 secrets
 from PIL import Image, UnidentifiedImageError
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-import secrets
-
 # Constants
 PASSWORD_FILE = "/tmp/key"
 prefix_image = "££"
