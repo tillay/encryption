@@ -1,4 +1,4 @@
-import sys, subprocess, io, os, base64 secrets
+import sys, subprocess, io, os, base64, secrets
 from PIL import Image, UnidentifiedImageError
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
