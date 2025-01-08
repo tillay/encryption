@@ -31,4 +31,5 @@ if input_text.startswith("&&"):
 else:
     encrypted_text = encrypt(input_text, password)
     encrypted_text = ("&&" + encrypted_text)
-    print("Encrypted text:\n",encrypted_text)
+    print("Encrypted text:")
+    print(encrypted_text)
