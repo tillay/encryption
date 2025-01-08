@@ -24,7 +24,7 @@ def decrypt(ciphertext, passphrase):
     cipher = AES.new(key, AES.MODE_CBC, iv)
     plaintext = unpad(cipher.decrypt(ciphertext), AES.block_size)
     return plaintext.decode()
-input_text = input("Input text (encrypted or not): ")
+input_text = input("Input text: ")
 if input_text.startswith("&&"):
     decrypted_text = decrypt(input_text[2:], password)
     print("Decrypted text:", decrypted_text)
