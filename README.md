@@ -19,12 +19,6 @@ The python script automatically checks for whats on your clipboard:
 
 - if it starts with `@@` it makes it the new password
 
-- if it starts with `££` it parses it as an encrypted image
-
-- if it is an png image, it encryptes the image (Other image types probably coming soonish maybe)
-
-- if it starts with none of these, it prompts the user for text to encrypt
-
 Flags:
 
 - `-p`: create new password, overwrite current saved password with it, and copy the new one to the clipboard. Add a number with the length of the password after
@@ -34,6 +28,18 @@ Flags:
 support is only for Linux with X11 or Wayland (minimal.py works on all os'es)
 
 For sharing passwords between people securely use pgpcli.
+
+# Usage (image.py)
+
+The python script automatically checks for what to do:
+
+- if a file ~/Downloads/message.txt exists, it parses that as an encrypted image
+
+- if the clipboard starts with `££` it parses it as an encrypted image
+
+- if the clipboard is an png image, it encryptes the image (Other image types probably coming soonish maybe)
+
+- if it starts with none of these, it does nothing
 
 
 # Testing protocol:
