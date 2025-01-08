@@ -1,11 +1,13 @@
 # encryption
 Source code for all of the end to end encryption projects I have been doing with some friends
 
-required dependencies:
+reccomended dependencies:
 
-`xclip, wl-clipboard, python-pyrcyptodome, tk, python-pillow`
+`xclip, wl-clipboard, python-pyrcyptodome, python-pillow`
 
-# Usage 
+minimal.py only requires pycryptodome.
+
+# Usage (encrypt.py)
 
 The default location for stored password is /tmp/key, which is wiped on reboot because its in ram.
 
@@ -29,20 +31,9 @@ Flags:
 
 - `-n`: manually type in a new password
 
-- `-i`: automatically opens a window with decrypted image for viewing
+support is only for Linux with X11 or Wayland (minimal.py works on all os'es)
 
-add the following line to your hyprland config to make the preview image floating:
-
-`windowrule=float,title:^(Image)(.*)$`
-
-support is only for Linux with X11 or Wayland (Windows is annoyying to code for)
-
-For sharing passwords between people securely just use pgp keys.
-
-decryptpgp.sh can take a PGP message on your clipboard and attempt to decrypt it if someone sends you a key
-
-use a graphical asymetric encryption tool like kleopatra for more complicated encryption work
-
+For sharing passwords between people securely use pgpcli.
 
 
 # Testing protocol:
@@ -57,6 +48,26 @@ See what happens when you run the script with:
 
 - Encrypted text already made on previous versions
 
+- Password starting with password prefix
+
+- Weird junk and file formats on clipboard
+
+- `-p` flag (make new random password)
+
+- `-n` flag (prompt manually for new password)
+
+- packages `xclip, wl-clipboard, python-pyrcyptodome` not installed
+
+- Not on a Linux system
+
+- On both Wayland and X11
+
+- On a Linux system but no desktop environment (in tty)
+
+For image.py:
+
+- random junk on clipboard (including bad formats)
+
 - Decrypted PNG image
 
 - Encrypted PNG image from previous test
@@ -70,21 +81,3 @@ See what happens when you run the script with:
 - Encrypted PNG image from download button on discord (message.txt)
 
 - Corrupted message.txt
-
-- Password starting with password prefix
-
-- Weird junk and file formats on clipboard
-
-- `-p` flag (make new random password)
-
-- `-n` flag (prompt manually for new password)
-
-- `-i` flag (preview image after decyryption)
-
-- packages `xclip, wl-clipboard, python-pyrcyptodome, tk` not installed
-
-- Not on a Linux system
-
-- On both Wayland and X11
-
-- On a Linux system but no desktop environment (in tty)
