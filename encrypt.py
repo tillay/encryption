@@ -25,6 +25,7 @@ def password_logic():
     if clipboard_content.startswith(prefix_password.encode()):
         with open(PASSWORD_FILE, 'w') as f: f.write(clipboard_content.decode())
         print(f"New password saved to {PASSWORD_FILE}.")
+        copy_to_clipboard("")
         sys.exit(0)
     if os.path.exists(PASSWORD_FILE): return open(PASSWORD_FILE).read()
     try:
