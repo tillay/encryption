@@ -7,6 +7,10 @@ reccomended dependencies:
 
 minimal.py only requires pycryptodome.
 
+# General Usage
+
+chmod +x run.sh&&./run.sh gives a menu of what to do
+
 # Usage (encrypt.py)
 
 The default location for stored password is /tmp/key, which is wiped on reboot because its in ram.
