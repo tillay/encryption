@@ -1,10 +1,8 @@
 package importkey
 
 import (
-	"bufio"
 	"fmt"
 	"os"
-	"pgpcli/internal/listkeys"
 	"pgpcli/lib/clipboard"
 
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
@@ -16,30 +14,18 @@ func ImportKey() error {
         return err
     }
 
-    _, err = crypto.NewKeyFromArmored(clipText)
+    thisKey, err := crypto.NewKeyFromArmored(clipText)
     if err != nil {
         return err
     }
 
-    fmt.Println()
-    fmt.Println("Already stored public key names:")
-    currentKeys, err := listkeys.GetPubkeys()
-    if err != nil {
-        return err
+    user := "";
+    for _, v := range thisKey.GetEntity().Identities {
+        if user != "" {
+            break
+        }
+        user = trimToFirstWord(v.Name)
     }
-    for _, v := range currentKeys {
-        fmt.Println(v)
-    }
-    fmt.Println()
-
-    fmt.Println("Enter new key name (public key):")
-    scanner := bufio.NewScanner(os.Stdin)
-    scanner.Scan()
-    err = scanner.Err()
-    if err != nil {
-        return err
-    }
-    user := scanner.Text()
 
     homeDir, err := os.UserHomeDir()
     if err != nil {
@@ -68,5 +54,19 @@ func ImportKey() error {
     if err != nil {
         return err
     }
+
+    fmt.Println("successful key import")
+
     return nil
+}
+
+func trimToFirstWord(x string) string {
+    for i := 0; i < len(x); i++ {
+        if string(x[i]) == " " {
+            x = x[:i]
+            break;
+        }
+    }
+
+    return x
 }

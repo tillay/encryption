@@ -29,7 +29,7 @@ func CreateKey() error {
     fmt.Println()
 
     scanner := bufio.NewScanner(os.Stdin)
-    fmt.Println("Enter new key name:")
+    fmt.Println("Enter name of key holder (this will also be the name of the key):")
     scanner.Scan()
     err = scanner.Err()
     if err != nil {
@@ -44,7 +44,7 @@ func CreateKey() error {
     }
     passphraseBytes := passphrase
 
-    keygenhandle := crypto.PGPWithProfile(profile.RFC9580()).KeyGeneration().AddUserId("createdwithwpgp", "nowhere@goesnowhere.com").New()
+    keygenhandle := crypto.PGPWithProfile(profile.RFC9580()).KeyGeneration().AddUserId(keyname, "nowhere@goesnowhere.com").New()
     privKey, err := keygenhandle.GenerateKeyWithSecurity(constants.HighSecurity)
     if err != nil {
         return err
