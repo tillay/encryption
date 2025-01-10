@@ -3,13 +3,16 @@ Source code for all of the end to end encryption projects I have been doing with
 
 reccomended dependencies:
 
-`xclip, wl-clipboard, python-pyrcyptodome, python-pillow`
+`xclip, wl-clipboard, python-pyrcyptodome, python-pillow (for image)`
 
 minimal.py only requires pycryptodome.
 
 # General Usage
+to install:
+`git clone https://github.com/tillay8/encryption`
+`cd encryption`
 
-chmod +x run.sh&&./run.sh gives a menu of what to do
+`./run.sh` gives a menu of things to do
 
 # Usage (encrypt.py)
 
