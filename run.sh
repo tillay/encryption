@@ -4,7 +4,7 @@ if ! command -v wl-copy &>/dev/null && ! command -v xclip &>/dev/null; then
   python3 minimal.py
   exit 1
 fi
-command -v go &>/dev/null || disable_pgp=true
+command -v go &>/dev/null || disable_pgp=true && echo please install go to run pgpcli
 python3 -c "import Crypto" &>/dev/null || pycryptodome_installed=false
 echo "Choose an option:"
 [[ $pycryptodome_installed != false ]] && {
