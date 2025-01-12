@@ -4,25 +4,22 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+
 # Constants
 PASSWORD_FILE = "/tmp/key"
 prefix_image = "££"
 decrypted_image_path = "/tmp/decrypted_image.png"
 message_file_path = os.path.expanduser("~/Downloads/message.txt")
+image_viewer = ("")
 
-# Open image in browser
-def open_image():
-    subprocess.Popen('xdg-open /tmp/decrypted_image.png', shell=True)
-
-# Clipboard functions
 def copy_to_clipboard(data):
     cmd = ["wl-copy"] if os.environ.get("XDG_SESSION_TYPE") == "wayland" else ["xclip", "-selection", "clipboard"]
     subprocess.run(cmd, input=data.encode() if isinstance(data, str) else data)
 
 def get_from_clipboard():
     cmd = ["wl-paste", "--no-newline"] if os.environ.get("XDG_SESSION_TYPE") == "wayland" else ["xclip", "-o", "-selection", "clipboard"]
-    return subprocess.run(cmd, stdout=subprocess.PIPE).stdout
 
+    return subprocess.run(cmd, stdout=subprocess.PIPE).stdout
 def derive_key(password):
     kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=password.encode(), iterations=100000, backend=default_backend())
     return kdf.derive(password.encode())
@@ -61,14 +58,10 @@ if clipboard_content.startswith(prefix_image.encode()):
         encrypted_image = clipboard_content[len(prefix_image):]
         decrypted_image = decrypt_image(encrypted_image, key)
         decrypted_image.save(decrypted_image_path)
-        copy_to_clipboard(decrypted_image_path)
-        print(f"Decrypted image copied to clipboard")
-        open_image()
-        if clipboard_content == process_message_file():
-            os.remove(message_file_path)
-        if not os.environ.get("XDG_SESSION_TYPE") == "wayland":
-            os.system(f"cat {decrypted_image_path} | xclip -selection clipboard -target image/png -i")
-            os.remove(decrypted_image_path)
+        if (image_viewer == ""):
+            os.system(f'xdg-open {decrypted_image_path}')
+        else:
+            os.system(f"{image_viewer} {decrypted_image_path}")
     except (UnidentifiedImageError, ValueError, OSError):
         print("click the funny little download button to get the encrypted image")
         sys.exit(1)
