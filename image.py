@@ -10,6 +10,10 @@ prefix_image = "££"
 decrypted_image_path = "/tmp/decrypted_image.png"
 message_file_path = os.path.expanduser("~/Downloads/message.txt")
 
+# Open image in browser
+def open_image():
+    subprocess.Popen('xdg-open /tmp/decrypted_image.png', shell=True)
+
 # Clipboard functions
 def copy_to_clipboard(data):
     cmd = ["wl-copy"] if os.environ.get("XDG_SESSION_TYPE") == "wayland" else ["xclip", "-selection", "clipboard"]
@@ -59,6 +63,7 @@ if clipboard_content.startswith(prefix_image.encode()):
         decrypted_image.save(decrypted_image_path)
         copy_to_clipboard(decrypted_image_path)
         print(f"Decrypted image copied to clipboard")
+        open_image()
         if clipboard_content == process_message_file():
             os.remove(message_file_path)
         if not os.environ.get("XDG_SESSION_TYPE") == "wayland":
