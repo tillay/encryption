@@ -60,7 +60,10 @@ if clipboard_content.startswith(prefix_image.encode()):
         decrypted_image.save(decrypted_image_path)
         if (image_viewer == ""):
             os.system(f'xdg-open {decrypted_image_path}')
+            xdg_default = subprocess.run(["xdg-mime", "query", "default", "image/png"], capture_output=True, text=True).stdout.strip()
+            print(f"Opened decrypted image with {xdg_default}")s
         else:
+            print(f"Opened decrypted image with {image_viewer}")
             os.system(f"{image_viewer} {decrypted_image_path}")
     except (UnidentifiedImageError, ValueError, OSError):
         print("click the funny little download button to get the encrypted image")
