@@ -21,18 +21,38 @@ def derive_key(password: str, salt: bytes) -> bytes:
     )
     return kdf.derive(password.encode())
 
+def encrypt_name(name: str, key: bytes) -> bytes:
+    iv = os.urandom(IV_SIZE)
+    cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
+    encryptor = cipher.encryptor()
+    padder = padding.PKCS7(BLOCK_SIZE).padder()
+    padded_name = padder.update(name.encode()) + padder.finalize()
+    encrypted_name = encryptor.update(padded_name) + encryptor.finalize()
+    return iv + encrypted_name
+
+def decrypt_name(encrypted_name: bytes, key: bytes) -> str:
+    iv = encrypted_name[:IV_SIZE]
+    encrypted_data = encrypted_name[IV_SIZE:]
+    cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
+    decryptor = cipher.decryptor()
+    decrypted_name = decryptor.update(encrypted_data) + decryptor.finalize()
+    unpadder = padding.PKCS7(BLOCK_SIZE).unpadder()
+    unpadded_name = unpadder.update(decrypted_name) + unpadder.finalize()
+    return unpadded_name.decode().rstrip('\0')
+
 def encrypt_file(filepath: Path, password: str):
     with open(filepath, 'rb') as file:
         file_data = file.read()
     salt = os.urandom(SALT_SIZE)
-    iv = os.urandom(IV_SIZE)
     key = derive_key(password, salt)
+    encrypted_name = encrypt_name(filepath.name, key)
+    enc_filepath = filepath.parent / (encrypted_name.hex() + '.enc')
+    iv = os.urandom(IV_SIZE)
     padder = padding.PKCS7(BLOCK_SIZE).padder()
     padded_data = padder.update(file_data) + padder.finalize()
     cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
     encryptor = cipher.encryptor()
     encrypted_data = encryptor.update(padded_data) + encryptor.finalize()
-    enc_filepath = filepath.with_suffix(f"{filepath.suffix}.enc")
     with open(enc_filepath, 'wb') as enc_file:
         enc_file.write(salt + iv + encrypted_data)
     filepath.unlink()
@@ -44,12 +64,14 @@ def decrypt_file(filepath: Path, password: str):
     iv = enc_data[SALT_SIZE:SALT_SIZE + IV_SIZE]
     encrypted_data = enc_data[SALT_SIZE + IV_SIZE:]
     key = derive_key(password, salt)
+    encrypted_name = bytes.fromhex(filepath.stem)
+    decrypted_name = decrypt_name(encrypted_name, key)
+    dec_filepath = filepath.parent / decrypted_name
     cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
     decryptor = cipher.decryptor()
     decrypted_data = decryptor.update(encrypted_data) + decryptor.finalize()
     unpadder = padding.PKCS7(BLOCK_SIZE).unpadder()
     original_data = unpadder.update(decrypted_data) + unpadder.finalize()
-    dec_filepath = filepath.with_suffix('') 
     with open(dec_filepath, 'wb') as dec_file:
         dec_file.write(original_data)
     filepath.unlink()
