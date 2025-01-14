@@ -65,7 +65,10 @@ if clipboard_content.startswith(prefix_image.encode()):
         else:
             print(f"Opened decrypted image with {image_viewer}")
             os.system(f"{image_viewer} {decrypted_image_path}")
-        os.system(f"rm {message_file_path}")
+        try:
+            os.remove(message_file_path)
+        except:
+            print(f"Somehow managed to decrypt image from clipboard. Use the download button next time")
     except (UnidentifiedImageError, ValueError, OSError):
         print("click the funny little download button to get the encrypted image")
         sys.exit(1)
