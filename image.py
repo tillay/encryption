@@ -6,10 +6,10 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from utils import copy, paste, password_logic, handle_flags
 prefix_image = "££"
-PASSWORD_FILE = "/tmp/key"
 decrypted_image_path = "/tmp/decrypted_image.png"
 message_file_path = os.path.expanduser("~/Downloads/message.txt")
 image_viewer = ("")
+
 def derive_key(password):
     kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=password.encode(), iterations=100000, backend=default_backend())
     return kdf.derive(password.encode())
@@ -33,9 +33,9 @@ def process_message_file():
         with open(message_file_path, 'rb') as f:
             return f.read()
     return None
+password = password_logic(paste())
 clipboard_content = process_message_file() or paste()
-password = password_logic(clipboard_content)
-
+handle_flags()
 if clipboard_content.startswith(prefix_image.encode()):
     try:
         key = derive_key(password)

@@ -10,7 +10,8 @@ def copy(data):
     cmd = ["wl-copy"] if os.environ.get("XDG_SESSION_TYPE") == "wayland" else ["xclip", "-selection", "clipboard"]
     subprocess.run(cmd, input=data.encode() if isinstance(data, str) else data)
 
-
+def passwd():
+    return PASSWORD_FILE
 def paste():
     cmd = ["wl-paste", "--no-newline"] if os.environ.get("XDG_SESSION_TYPE") == "wayland" else ["xclip", "-o", "-selection", "clipboard"]
     return subprocess.run(cmd, stdout=subprocess.PIPE).stdout
@@ -54,5 +55,6 @@ def handle_flags():
                 sys.exit(1)
             copy(password)
             with open(PASSWORD_FILE, 'w') as f: f.write(password)
-            print(f"New random password saved to {PASSWORD_FILE} and copied to clipboard.")
+            print(f"New RANDOM password saved to {PASSWORD_FILE} and copied to clipboard.")
             sys.exit(0)
+handle_flags()
