@@ -4,22 +4,12 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-
-# Constants
-PASSWORD_FILE = "/tmp/key"
+from utils import copy, paste, password_logic, handle_flags
 prefix_image = "££"
+PASSWORD_FILE = "/tmp/key"
 decrypted_image_path = "/tmp/decrypted_image.png"
 message_file_path = os.path.expanduser("~/Downloads/message.txt")
 image_viewer = ("")
-
-def copy_to_clipboard(data):
-    cmd = ["wl-copy"] if os.environ.get("XDG_SESSION_TYPE") == "wayland" else ["xclip", "-selection", "clipboard"]
-    subprocess.run(cmd, input=data.encode() if isinstance(data, str) else data)
-
-def get_from_clipboard():
-    cmd = ["wl-paste", "--no-newline"] if os.environ.get("XDG_SESSION_TYPE") == "wayland" else ["xclip", "-o", "-selection", "clipboard"]
-
-    return subprocess.run(cmd, stdout=subprocess.PIPE).stdout
 def derive_key(password):
     kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=password.encode(), iterations=100000, backend=default_backend())
     return kdf.derive(password.encode())
@@ -43,15 +33,9 @@ def process_message_file():
         with open(message_file_path, 'rb') as f:
             return f.read()
     return None
+clipboard_content = process_message_file() or paste()
+password = password_logic(clipboard_content)
 
-clipboard_content = process_message_file() or get_from_clipboard()
-if not os.path.exists(PASSWORD_FILE):
-    password = input("Enter password: ")
-    with open(PASSWORD_FILE, 'w') as file:
-        file.write(password)
-else:
-    with open(PASSWORD_FILE, 'r') as file:
-        password = file.read()
 if clipboard_content.startswith(prefix_image.encode()):
     try:
         key = derive_key(password)
@@ -77,7 +61,7 @@ else:
         image = Image.open(io.BytesIO(clipboard_content))
         key = derive_key(password)
         encrypted_image = encrypt_image(image, key)
-        copy_to_clipboard(prefix_image.encode() + encrypted_image)
+        copy(prefix_image.encode() + encrypted_image)
         print("Image encrypted and copied to clipboard.")
     except (UnidentifiedImageError, ValueError) as e:
         print("Error: Clipboard does not contain a valid encrypted or decrypted image. Use encrypt.py for text encryption.")
