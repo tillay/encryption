@@ -5,6 +5,7 @@ from Crypto.Cipher import AES
 
 PASSWORD_FILE = "/tmp/key"
 prefix_password = "@@"
+KEY=""
 
 def copy(data):
     cmd = ["wl-copy"] if os.environ.get("XDG_SESSION_TYPE") == "wayland" else ["xclip", "-selection", "clipboard"]
@@ -17,12 +18,12 @@ def paste():
     return subprocess.run(cmd, stdout=subprocess.PIPE).stdout
 
 def encrypt(plaintext, passphrase):
-    key, iv = sha256(passphrase.encode()).digest(), os.urandom(AES.block_size)
+    key, iv = sha256((passphrase+KEY).encode()).digest(), os.urandom(AES.block_size)
     return base64.b64encode(iv + AES.new(key, AES.MODE_CBC, iv).encrypt(pad(plaintext.encode(), AES.block_size))).decode()
 def decrypt(ciphertext, passphrase):
     try:
         decoded = base64.b64decode(ciphertext)
-        return unpad(AES.new(sha256(passphrase.encode()).digest(), AES.MODE_CBC, decoded[:AES.block_size]).decrypt(decoded[AES.block_size:]), AES.block_size).decode()
+        return unpad(AES.new(sha256((passphrase+KEY).encode()).digest(), AES.MODE_CBC, decoded[:AES.block_size]).decrypt(decoded[AES.block_size:]), AES.block_size).decode()
     except (ValueError, KeyError): return None
 
 def password_logic(clipboard_content):
