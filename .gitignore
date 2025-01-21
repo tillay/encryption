@@ -2,3 +2,5 @@ testing/
 bin/
 *.key
 token
+__pycache__
+*.pyc
