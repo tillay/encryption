@@ -107,7 +107,7 @@ try:
                     print(var)
                     last_var = var
                 else:
-                    print(f"{colors[1][1]}[some unencrypted messages]")
+                    print(f"{colors[7][1]}[some unencrypted messages]")
                     last_var = None
     elif sys.argv[1] == "send":
         while True:
@@ -121,4 +121,5 @@ try:
                 encrypted_message = encrypt(to_send, get_pass())
                 send_message(get_channel(), "&&" + encrypted_message)
 except KeyboardInterrupt:
+    os.system("pkill tmux")
     os.system("clear")
