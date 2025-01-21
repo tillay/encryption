@@ -73,3 +73,19 @@ this will create a pgpcli binary, which can be "dot slashed" or run by ```./pgpc
 The menu is pretty straightfoward. By default, keys are stored in ~/wpgp, but that can be changed
 
 pgpcli also checks your clipboard to see if you have a public or private key on your clipboard, and will run the proper steps if so. 
+
+# Usage (discord.py)
+
+Discord.py is designed for seamless encryption integration with discord. 
+
+put your discord token into a file named `token` in the same directory as you are running the script from
+
+if you dont know how to get your discord token, google it
+
+change the instance varaible `channel_id` to be the channel id of where you want to send the messages
+
+if you use it with flag `-listen` it will print out all decrypted messages in real time that are sent in that channel
+
+if you use it with flag `-send` it will prompt for a message to send to the channel, and then send it encrypted.
+
+make sure you have already set a password with encrypt, image, or utils scripts 
