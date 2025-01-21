@@ -1,11 +1,13 @@
 # encryption
 Source code for all of the end to end encryption projects I have been doing with some friends
 
-reccomended dependencies:
+for everything you need: `pycryptodome`
 
-`xclip, wl-clipboard, python-pycryptodome, python-pillow (for image)`
+for image.py you need `pillow`
 
-minimal.py only requires pycryptodome.
+for image.py, pgpcli, and encrypt.py you need `xclip` or `wl-clipboard` (depending whether you are on wayland or X11)
+
+minimal.py only requires `pycryptodome`.
 
 # General Usage
 to install:
