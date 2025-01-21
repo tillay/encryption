@@ -9,8 +9,8 @@ minimal.py only requires pycryptodome.
 
 # General Usage
 to install:
-`git clone https://github.com/tillay8/encryption`
-`cd encryption`
+
+```git clone https://github.com/tillay8/encryption&&cd encryption```
 
 to run a python script:
 
