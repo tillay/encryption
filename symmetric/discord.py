@@ -1,14 +1,19 @@
 import json, os, http.client, sys, csv
 from utils import encrypt, decrypt
 
+os.system("mkdir ~/tilcord")
+
 PASSWORD_FILE = "/tmp/key"
-TOKEN_FILE = "./token"
-CHANNEL_FILE = "./channel"
+TOKEN_FILE = os.path.expanduser("~/tilcord/token")
+CHANNEL_FILE = os.path.expanduser("~/tilcord/channel")
 
 colors = [
-    ("black", "\033[30m"), ("red", "\033[31m"), ("green", "\033[32m"),
-    ("yellow", "\033[33m"), ("blue", "\033[34m"), ("magenta", "\033[35m"),
-    ("cyan", "\033[36m"), ("white", "\033[37m"), ("reset", "\033[0m")
+    ("black", "\033[30m"), ("dark_red", "\033[31m"), ("green", "\033[32m"),
+    ("dark_yellow", "\033[33m"), ("dark_blue", "\033[34m"), ("purple", "\033[35m"),
+    ("teal", "\033[36m"), ("light_gray", "\033[37m"),
+    ("dark_gray", "\033[90m"), ("red", "\033[91m"), ("lime", "\033[92m"),
+    ("yellow", "\033[93m"), ("blue", "\033[94m"), ("magenta", "\033[95m"),
+    ("cyan", "\033[96m"), ("white", "\033[97m"),
 ]
 
 def get_pass():
@@ -102,7 +107,7 @@ try:
                     print(var)
                     last_var = var
                 else:
-                    print(f"{colors[1][1]}[some unencrypted messages]")
+                    print(f"{colors[7][1]}[some unencrypted messages]")
                     last_var = None
     elif sys.argv[1] == "send":
         while True:
