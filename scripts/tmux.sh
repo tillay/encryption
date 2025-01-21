@@ -1,4 +1,5 @@
 #!/bin/sh
+tmux kill-session
 ENCRYPTION_DIR=/home/$USER
 tmux new-session -d bash
 tmux split-window -h bash
