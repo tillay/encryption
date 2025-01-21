@@ -69,9 +69,12 @@ if sys.argv[1] == "listen":
     while True:
         var = listen_message(channel_id)
         if var != last_var:
-            print(var)
-            last_var = var
-
+            if var != None:
+                print(var)
+                last_var = var
+            else:
+                print("[some unencrypted messages]")
+                last_var = None
 elif sys.argv[1] == "send":
     while True:
         send_message(channel_id, "&&"+encrypt(input("Message to encrypt: "),get_pass()))
