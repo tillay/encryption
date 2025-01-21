@@ -39,7 +39,7 @@ header_data = {
 def get_user_color(user):
     user_map = {}
     try:
-        with open('users.csv', mode='r') as file:
+        with open(os.path.expanduser("~/tilcord/users.csv"), mode='r') as file:
             for row in csv.reader(file):
                 if len(row) == 2:
                     user_map[row[0].strip()] = row[1].strip()
@@ -107,7 +107,7 @@ try:
                     print(var)
                     last_var = var
                 else:
-                    print(f"{colors[7][1]}[some unencrypted messages]")
+                    print(f"{colors[1][1]}[some unencrypted messages]")
                     last_var = None
     elif sys.argv[1] == "send":
         while True:
