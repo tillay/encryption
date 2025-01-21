@@ -116,4 +116,4 @@ try:
                 encrypted_message = encrypt(to_send, get_pass())
                 send_message(get_channel(), "&&" + encrypted_message)
 except KeyboardInterrupt:
-    print("")
+    os.system("clear")
