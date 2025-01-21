@@ -6,7 +6,7 @@ os.system("mkdir -p ~/tilcord")
 PASSWORD_FILE = "/tmp/key"
 TOKEN_FILE = os.path.expanduser("~/tilcord/token")
 CHANNEL_FILE = os.path.expanduser("~/tilcord/channel")
-
+DISCORD_USER = "tillay8" # Only to not play sounds on your own messages lol
 colors = [
     ("black", "\033[30m"), ("dark_red", "\033[31m"), ("green", "\033[32m"),
     ("dark_yellow", "\033[33m"), ("dark_blue", "\033[34m"), ("purple", "\033[35m"),
@@ -86,6 +86,8 @@ def listen_message(channel_id):
             for message in messages[-1:]:
                 if prev_message != message['content']:
                     if "&&" in message['content'] and message['content'] != None:
+                        if message['author']['username'] != DISCORD_USER:
+                            os.system("mpv ~/tilcord/horn.mp3 > /dev/null")
                         return f"{get_user_color(message['author']['username'])}{message['author']['username']}\033[0m: {decrypt(message['content'], get_pass())}"
                         prev_message = message['content']
         else:
