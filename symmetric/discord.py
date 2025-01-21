@@ -1,7 +1,7 @@
 import json, os, http.client, sys, csv
 from utils import encrypt, decrypt
 
-os.system("mkdir ~/tilcord")
+os.system("mkdir -p ~/tilcord")
 
 PASSWORD_FILE = "/tmp/key"
 TOKEN_FILE = os.path.expanduser("~/tilcord/token")
