@@ -80,14 +80,25 @@ pgpcli also checks your clipboard to see if you have a public or private key on 
 
 Discord.py is designed for seamless encryption integration with discord. 
 
-put your discord token into a file named `token` in the same directory as you are running the script from
+put your discord token into a file named `token` in the directory `~/tilcord`. This is the default configuration file directory
 
 if you dont know how to get your discord token, google it
 
-change the instance varaible `channel_id` to be the channel id of where you want to send the messages
+make the file `~/tilcord/channel` to be the channel id of where you want to send the messages
 
-if you use it with flag `-listen` it will print out all decrypted messages in real time that are sent in that channel
+to set it from inside the script, type `set <channel id>`
 
-if you use it with flag `-send` it will prompt for a message to send to the channel, and then send it encrypted.
+you also needs a users.csv script at `~/tilcord/users.csv`. This script should be formatted like so:
+```
+user1, red
+user2, blue
+user3, teal
+```
+
+to add a user from within the script, type `adduser username, green` into the send console. If it worked, it will give an output, otherwise try again. 
+
+if you run the script with flag `-listen` it will print out all decrypted messages in real time that are sent in that channel
+
+if you run the script with flag `-send` it will prompt for a message to send to the channel, and then send it encrypted
 
 make sure you have already set a password with encrypt, image, or utils scripts 
