@@ -3,7 +3,7 @@ Source code for all of the end to end encryption projects I have been doing with
 
 reccomended dependencies:
 
-`xclip, wl-clipboard, python-pyrcyptodome, python-pillow (for image)`
+`xclip, wl-clipboard, python-pycryptodome, python-pillow (for image)`
 
 minimal.py only requires pycryptodome.
 
@@ -11,8 +11,6 @@ minimal.py only requires pycryptodome.
 to install:
 `git clone https://github.com/tillay8/encryption`
 `cd encryption`
-
-`./run.sh` gives a menu of things to do
 
 # Usage (encrypt.py)
 
@@ -26,16 +24,6 @@ The python script automatically checks for whats on your clipboard:
 
 - if it starts with `@@` it makes it the new password
 
-Flags:
-
-- `-p`: create new password, overwrite current saved password with it, and copy the new one to the clipboard. Add a number with the length of the password after
-
-- `-n`: manually type in a new password
-
-support is only for Linux with X11 or Wayland (minimal.py works on all os'es)
-
-For sharing passwords between people securely use pgpcli.
-
 # Usage (image.py)
 
 The python script automatically checks for what to do:
@@ -48,49 +36,32 @@ The python script automatically checks for what to do:
 
 - if it starts with none of these, it does nothing
 
+# Flags (image.py, encrypt.py, utils.py)
 
-# Testing protocol:
+- `-p`: create new password, overwrite current saved password with it, and copy the new one to the clipboard. Add a number with the length of the password after. Example: `python3 utils.py -p 420`
 
-For encrypt.py:
+- `-n`: manually type in a new password
 
-See what happens when you run the script with:
+support of encrypt.py and image.py are only for Linux with X11 or Wayland due to clipboard utility needs
 
-- Nothing on your clipboard (should prompt for text)
+# Usage (minimal.py)
 
-- Encrypted text from previous test
+minimal.py is designed to work on a lot more OS'es due to no clipboard integration.
 
-- Encrypted text already made on previous versions
+to use, type your message into the text box. if its unencrypted, it will encrypt it, and if it is encrypted, it will decrypt it. 
 
-- Password starting with password prefix
+# Usage (pgpcli)
 
-- Weird junk and file formats on clipboard
+For sharing passwords between people securely use pgpcli.
 
-- `-p` flag (make new random password)
+pgpcli uses the PGP asymetric standard for encryption and provides a wrapper for PGP encryption
 
-- `-n` flag (prompt manually for new password)
+to compile:
 
-- packages `xclip, wl-clipboard, python-pyrcyptodome` not installed
+make sure you are in the pgpcli subdirectory, then run ```go build -o pgpcli```
 
-- Not on a Linux system
+this will create a pgpcli binary, which can be "dot slashed" or run by ```./pgpcli```
 
-- On both Wayland and X11
+The menu is pretty straightfoward. By default, keys are stored in ~/wpgp, but that can be changed
 
-- On a Linux system but no desktop environment (in tty)
-
-For image.py:
-
-- random junk on clipboard (including bad formats)
-
-- Decrypted PNG image
-
-- Encrypted PNG image from previous test
-
-- Encrypted PNG image from previous version
-
-- Encrypted PNG image from short copy from discord
-
-- Broken PNG image from attempted short copy from discord
-
-- Encrypted PNG image from download button on discord (message.txt)
-
-- Corrupted message.txt
+pgpcli also checks your clipboard to see if you have a public or private key on your clipboard, and will run the proper steps if so. 
