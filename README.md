@@ -12,6 +12,14 @@ to install:
 `git clone https://github.com/tillay8/encryption`
 `cd encryption`
 
+to run a python script:
+
+`python3 <script.py> <optional flag>`
+
+running a go script (pgpcli) is explained later
+
+note: support of encrypt.py and image.py are only for Linux with X11 or Wayland due to clipboard utility needs
+
 # Usage (encrypt.py)
 
 The default location for stored password is /tmp/key, which is wiped on reboot because its in ram.
@@ -36,13 +44,13 @@ The python script automatically checks for what to do:
 
 - if it starts with none of these, it does nothing
 
-# Flags (image.py, encrypt.py, utils.py)
+# Flags 
 
-- `-p`: create new password, overwrite current saved password with it, and copy the new one to the clipboard. Add a number with the length of the password after. Example: `python3 utils.py -p 420`
+these work on image.py, encrypt.py, and utils.py
+
+- `-p`: create new password, overwrite current saved password with it, and copy the new one to the clipboard. Add a number with the length of the password after. Example: ```python3 utils.py -p 420```
 
 - `-n`: manually type in a new password
-
-support of encrypt.py and image.py are only for Linux with X11 or Wayland due to clipboard utility needs
 
 # Usage (minimal.py)
 
