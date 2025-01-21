@@ -1,9 +1,15 @@
-import json, os, http.client, sys
+import json, os, http.client, sys, csv
 from utils import encrypt, decrypt
 
 PASSWORD_FILE = "/tmp/key"
 TOKEN_FILE = "./token"
-channel_id = 1315424206523203684
+CHANNEL_FILE = "./channel"
+
+colors = [
+    ("black", "\033[30m"), ("red", "\033[31m"), ("green", "\033[32m"),
+    ("yellow", "\033[33m"), ("blue", "\033[34m"), ("magenta", "\033[35m"),
+    ("cyan", "\033[36m"), ("white", "\033[37m"), ("reset", "\033[0m")
+]
 
 def get_pass():
     if os.path.exists(PASSWORD_FILE):
@@ -15,11 +21,30 @@ def get_token():
         with open(TOKEN_FILE, 'r') as f:
            return f.readline().strip()
 
+def get_channel():
+    if os.path.exists(CHANNEL_FILE):
+        with open(CHANNEL_FILE, 'r') as f:
+           return f.readline().strip()
 header_data = {
     "Content-Type": "application/json",
-    "User-Agent": "tilley",
+    "User-Agent": "Discordbot",
     "Authorization": get_token()
 }
+
+def get_user_color(user):
+    user_map = {}
+    try:
+        with open('users.csv', mode='r') as file:
+            for row in csv.reader(file):
+                if len(row) == 2:
+                    user_map[row[0].strip()] = row[1].strip()
+    except FileNotFoundError:
+        print("Please add a users.csv file\nFormat is like:\nuser1, red\nuser2, green\nuser3, yellow\netc")
+        sys.exit(1)
+    color_name = user_map.get(user)
+    if color_name:
+        return next(c[1] for c in colors if c[0] == color_name)
+    return colors[-1][1]
 
 def send_message(channel_id, message_content):
     conn = http.client.HTTPSConnection("discord.com", 443)
@@ -34,7 +59,10 @@ def send_message(channel_id, message_content):
         if 199 < response.status < 300:
             print("Message sent successfully.")
         else:
-            print(f"Discord aint happy")
+            if response.status == 400:
+                print(f"please add a channel file in {CHANNEL_FILE} :)\nthat can be set by typing set <channel id>")
+            else:
+                print(f"Discord aint happy: {response.status} error")
     except TypeError as e:
         print(f"Please move your token file to {TOKEN_FILE}")
         sys.exit(1)
@@ -53,7 +81,7 @@ def listen_message(channel_id):
             for message in messages[-1:]:
                 if prev_message != message['content']:
                     if "&&" in message['content'] and message['content'] != None:
-                        return(f"{message['author']['username']}: {decrypt(message['content'], get_pass())}")
+                        return f"{get_user_color(message['author']['username'])}{message['author']['username']}\033[0m: {decrypt(message['content'], get_pass())}"
                         prev_message = message['content']
         else:
             return(f"Discord aint happy: {response.status} error")
@@ -63,18 +91,29 @@ def listen_message(channel_id):
     finally:
         conn.close()
 
-os.system("clear")
-if sys.argv[1] == "listen":
-    last_var = None
-    while True:
-        var = listen_message(channel_id)
-        if var != last_var:
-            if var != None:
-                print(var)
-                last_var = var
+try:
+    os.system("clear")
+    if sys.argv[1] == "listen":
+        last_var = None
+        while True:
+            var = listen_message(get_channel())
+            if var != last_var:
+                if var != None:
+                    print(var)
+                    last_var = var
+                else:
+                    print(f"{colors[1][1]}[some unencrypted messages]")
+                    last_var = None
+    elif sys.argv[1] == "send":
+        while True:
+            to_send = input("Message to encrypt: ")
+            if to_send.startswith("set "):
+                new_channel = to_send.split(" ", 1)[1]
+                with open(CHANNEL_FILE, 'w') as f:
+                    f.write(new_channel)
+                print(f"Channel set to: {new_channel}")
             else:
-                print("[some unencrypted messages]")
-                last_var = None
-elif sys.argv[1] == "send":
-    while True:
-        send_message(channel_id, "&&"+encrypt(input("Message to encrypt: "),get_pass()))
+                encrypted_message = encrypt(to_send, get_pass())
+                send_message(get_channel(), "&&" + encrypted_message)
+except KeyboardInterrupt:
+    print("")
