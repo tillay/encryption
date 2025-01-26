@@ -1,7 +1,7 @@
 import subprocess, base64, os, platform, sys
 try:
-    from Crypto.Cipher import AES
-    from Crypto.Util.Padding import pad, unpad
+    from Cryptodome.Cipher import AES
+    from Cryptodome.Util.Padding import pad, unpad
     from hashlib import sha256
 except ModuleNotFoundError:
     print("Install pycryptodome with pip or your package manager")
