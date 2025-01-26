@@ -1,10 +1,4 @@
-import sys, subprocess, secrets, io, os, base64, random, string, binascii, re
-from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from cryptography.hazmat.backends import default_backend
-from Crypto.Cipher import AES
-from Crypto.Util.Padding import pad, unpad
+import sys, re
 from utils import copy, paste, encrypt, decrypt, password_logic, handle_flags, passwd
 prefix_text = "&&"
 
