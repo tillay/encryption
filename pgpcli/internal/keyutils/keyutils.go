@@ -3,7 +3,7 @@ package keyutils
 import (
 	"os"
 	"pgpcli/lib/clipboard"
-
+	"strings"
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
 )
 
@@ -66,6 +66,10 @@ func CheckClipboardForKey() (string, error) {
     if crypto.IsPGPMessage(clipText) {
         return "decrypt", nil
     }
-
+    if strings.HasPrefix(clipText, "@@") {
+        return "encrypt", nil
+    }
+    
     return "", nil
 }
+

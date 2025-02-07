@@ -4,22 +4,33 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 	"pgpcli/internal/keyutils"
 	"pgpcli/internal/listkeys"
 	"pgpcli/lib/clipboard"
-
 	"github.com/ProtonMail/gopenpgp/v3/crypto"
 )
 
+
 func Encrypt() error {
-    fmt.Println("Message to encrypt:")
-    scanner := bufio.NewScanner(os.Stdin)
-    scanner.Scan()
-    err := scanner.Err()
+    clipText, err := clipboard.Read()
     if err != nil {
         return err
     }
-    v := scanner.Text()
+
+    var v string
+    if strings.HasPrefix(clipText, "@@") {
+        v = clipText
+        fmt.Println("Detected password on clipboard. Encrypting!")
+    } else {
+        fmt.Println("Message to encrypt:")
+        scanner := bufio.NewScanner(os.Stdin)
+        scanner.Scan()
+        if err := scanner.Err(); err != nil {
+            return err
+        }
+        v = scanner.Text()
+    }
 
     pgp := crypto.PGP()
 

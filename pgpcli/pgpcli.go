@@ -20,6 +20,7 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
+
 	if len(os.Args) > 1 {
         action = os.Args[1]
     }
