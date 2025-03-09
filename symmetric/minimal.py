@@ -1,12 +1,12 @@
 import subprocess, base64, os, platform, sys
+from hashlib import sha256
 try:
-    from Cryptodome.Cipher import AES
     from Cryptodome.Util.Padding import pad, unpad
-    from hashlib import sha256
+    from Cryptodome.Cipher import AES
 except ModuleNotFoundError:
-    print("Install pycryptodome with pip or your package manager")
-    sys.exit(1)
-
+    from Crypto.Util.Padding import pad, unpad
+    from Crypto.Cipher import AES
+    
 password = "PASSWORD_GOES_HERE"
 
 def encrypt(plaintext, passphrase):
