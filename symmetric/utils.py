@@ -1,8 +1,13 @@
 import sys, subprocess, os, base64, random, string
-from Crypto.Util.Padding import pad, unpad
 from hashlib import sha256
-from Crypto.Cipher import AES
 
+try:
+    from Cryptodome.Util.Padding import pad, unpad
+    from Cryptodome.Cipher import AES
+except ModuleNotFoundError:
+    from Crypto.Util.Padding import pad, unpad
+    from Crypto.Cipher import AES
+    
 PASSWORD_FILE = "/tmp/key"
 prefix_password = "@@"
 KEY=""
