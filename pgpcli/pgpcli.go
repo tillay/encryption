@@ -16,6 +16,7 @@ import (
 )
 
 func main() {
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
     action, err := keyutils.CheckClipboardForKey()
     if err != nil {
         log.Fatal(err)
