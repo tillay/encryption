@@ -47,7 +47,7 @@ func Read() (string, error) {
 }
 
 func x11Read() (string, error) {
-    cmd := exec.Command("xclip", "-selection", "-clipboard", "-o")
+    cmd := exec.Command("xclip", "-selection", "clipboard", "-o")
     output, err := cmd.Output()
 	if err != nil {
 		return "", err
