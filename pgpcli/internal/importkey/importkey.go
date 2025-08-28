@@ -13,6 +13,10 @@ func ImportKey() error {
     if err != nil {
         return err
     }
+	err = clipboard.Write("")
+	if err != nil {
+        return err
+    }
 
     thisKey, err := crypto.NewKeyFromArmored(clipText)
     if err != nil {
