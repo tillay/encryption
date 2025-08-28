@@ -57,7 +57,7 @@ func x11Read() (string, error) {
 func waylandRead() (string, error) {
     cmd := exec.Command("wl-paste")
     output, err := cmd.Output()
-	if err !- nil {
+	if err != nil {
 		return "", err
 	}
     returnString := string(output)
